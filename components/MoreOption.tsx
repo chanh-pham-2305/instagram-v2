@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState,useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Activity, Bookmark, ChevronLeft, LogOut, Menu, Moon, Settings, Sun } from 'lucide-react';
 
@@ -17,6 +17,7 @@ import { Button } from './ui/button';
 import { useTheme } from 'next-themes';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
+import { signOut } from 'next-auth/react';
 
 export const MoreOption = () => {
   const [showModeToggle, setShowModeToggle] = useState(false);
@@ -34,20 +35,23 @@ export const MoreOption = () => {
       }
     }
 
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick);
 
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, [ref]);
 
   return (
-    <DropdownMenu open={open}>
-      <DropdownMenuTrigger asChild className='!justify-start'>
+    <DropdownMenu open={open} >
+      <DropdownMenuTrigger
+        asChild
+        className="!justify-start"
+      >
         <Button
           onClick={() => setOpen(!open)}
-          variant={"ghost"}
-          size={"lg"}
+          variant={'ghost'}
+          size={'lg'}
           className="md:w-fit xl:w-full space-x-2 !px-3"
         >
           <Menu />
@@ -58,8 +62,8 @@ export const MoreOption = () => {
       <DropdownMenuContent
         ref={ref}
         className={cn(
-          "dark:bg-neutral-800 w-64 !rounded-xl !p-0 transition-opacity",
-          !open && "opacity-0"
+          'dark:bg-neutral-800 w-64 !rounded-xl !p-0 transition-opacity',
+          !open && 'opacity-0',
         )}
         align="end"
         alignOffset={-40}
@@ -87,8 +91,10 @@ export const MoreOption = () => {
               <p>Switch appearance</p>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="optionItem" >
-            {/* onClick={() => signOut()} */}
+            <DropdownMenuItem
+              className="optionItem"
+              onClick={() => signOut()}
+            >
               <LogOut size={20} />
               <p>Log out</p>
             </DropdownMenuItem>
@@ -98,24 +104,36 @@ export const MoreOption = () => {
         {showModeToggle && (
           <>
             <div className="flex items-center border-b border-gray-200 dark:border-neutral-700 py-3.5 px-2.5">
-              <ChevronLeft size={18} onClick={() => setShowModeToggle(false)} />
+              <ChevronLeft
+                size={18}
+                onClick={() => setShowModeToggle(false)}
+              />
               <p className="font-bold ml-1">Switch appearance</p>
-              {theme === "dark" ? (
-                <Moon size={20} className="ml-auto" />
+              {theme === 'dark' ? (
+                <Moon
+                  size={20}
+                  className="ml-auto"
+                />
               ) : (
-                <Sun size={20} className="ml-auto" />
+                <Sun
+                  size={20}
+                  className="ml-auto"
+                />
               )}
             </div>
 
-            <Label htmlFor="dark-mode" className="optionItem">
+            <Label
+              htmlFor="dark-mode"
+              className="optionItem"
+            >
               Dark Mode
               <DropdownMenuItem className="ml-auto !p-0">
                 <Switch
                   id="dark-mode"
                   className="ml-auto"
-                  checked={theme === "dark"}
+                  checked={theme === 'dark'}
                   onCheckedChange={(checked) => {
-                    setTheme(checked ? "dark" : "light");
+                    setTheme(checked ? 'dark' : 'light');
                   }}
                 />
               </DropdownMenuItem>

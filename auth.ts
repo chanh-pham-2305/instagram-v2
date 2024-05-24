@@ -1,4 +1,4 @@
-import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/lib/prisma';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth, { getServerSession, type NextAuthOptions } from 'next-auth';
@@ -6,7 +6,7 @@ import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next
 
 export const config = {
   pages: {
-    signIn: '/login',
+    signIn: '/sign-in',
   },
   adapter: PrismaAdapter(prisma),
   providers: [

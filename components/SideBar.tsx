@@ -1,14 +1,12 @@
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
-import { MoreOption, SearchInput } from './index';
-import { usePathname } from 'next/navigation';
-import { sidebarLinks } from '@/constants';
-import { buttonVariants } from './ui/button';
+import { MoreOption, NavContent, ProfileLink, SearchInput } from './index';
 import { Instagram,Heart } from 'lucide-react';
+import { auth } from '@/auth';
 
-export const SideBar = () => {
-  const pathname = usePathname();
+export const SideBar = async () => {
+  const session = await auth();
+  const user = session?.user;
   return (
     <section className="sidebar">
       <div className="topNav">
@@ -29,38 +27,10 @@ export const SideBar = () => {
         <Instagram className="w-10" />
         <h1 className="hidden text-[16px] font-extrabold xl:block">Instagram v2</h1>
       </Link>
-      <nav className="navContent">
-        {sidebarLinks.map((item) => {
-          const LinkIcon = item.icon;
-          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-          return (
-            <Link
-              href={item.href}
-              key={item.name}
-              className={buttonVariants({
-                variant: isActive ? 'secondary' : 'ghost',
-                className: cn('sidebar-link group transition duration-500', {
-                  'hidden md:flex': item.hideOnMobile,
-                }),
-                size: 'lg',
-              })}
-            >
-              <LinkIcon
-                className={cn('w-10 group-hover:scale-110', { 'font-extrabold': isActive })}
-              />
-              {/* ??? */}
-              <p
-                className={`${cn('hidden xl:block', {
-                  'font-extrabold': isActive,
-                })}`}
-              >
-                {item.name}
-              </p>
-            </Link>
-          );
-        })}
-      </nav>
+      <NavContent />
+      <div className='w-full flex flex-row gap-3 xl:!justify-start'>
+        {user && <ProfileLink user={user} />}
+      </div>
       <div className="moreOption">
         <MoreOption />
       </div>
