@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth, { getServerSession, type NextAuthOptions } from 'next-auth';
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import { removeVNTones } from './lib/utils';
 
 export const config = {
   pages: {
@@ -17,6 +18,7 @@ export const config = {
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 24 * 60 * 60,
   },
   callbacks: {
     async session({ session, token }) {
@@ -37,17 +39,20 @@ export const config = {
         },
       });
 
+      //create token
       if (!prismaUser) {
         token.id = user.id;
         return token;
       }
+
+      //default username
       if (!prismaUser.username) {
         await prisma.user.update({
           where: {
             id: prismaUser.id,
           },
           data: {
-            username: prismaUser.name?.split(' ').join('').toLowerCase(),
+            username: removeVNTones(prismaUser.name?.split(' ').join('').toLowerCase() || ''),
           },
         });
       }

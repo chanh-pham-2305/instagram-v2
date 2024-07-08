@@ -3,7 +3,7 @@
 // import { calSans } from "@/app/fonts";
 import { signIn } from 'next-auth/react';
 import { useFormStatus } from 'react-dom';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import logoGoogleLink from '../public/images/google.png';
 
 import React from 'react';

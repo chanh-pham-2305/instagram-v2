@@ -1,14 +1,14 @@
-import { SideBar } from '@/components/SideBar';
+import SideBar from '@/components/Sidebar/SideBar';
+import DrawerContextProvider from '@/components/Sidebar/SideBarProvider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen relative flex-col md:flex-row md:overflow-hidden">
+    <div className="relative flex h-screen w-full flex-col md:flex-row overflow-y-scroll">
+      <DrawerContextProvider>
+        <SideBar />
+      </DrawerContextProvider>
 
-      <SideBar />
-
-      <div className="flex-grow mt-12 md:mt-0 flex-1 w-full md:overflow-y-auto sm:p-6 md:p-12 max-w-7xl mx-auto">
-        {children}
-      </div>
+      <div className="flex-1 w-full px-2 mt-[70px] md:p-12 max-w-7xl mx-auto">{children}</div>
     </div>
   );
 }

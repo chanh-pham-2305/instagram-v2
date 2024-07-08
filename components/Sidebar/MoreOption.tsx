@@ -8,22 +8,23 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
-import { Label } from './ui/label';
-import { Switch } from './ui/switch';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { signOut } from 'next-auth/react';
+import { DRAWER, useDrawer } from './SideBarProvider';
 
 export const MoreOption = () => {
   const [showModeToggle, setShowModeToggle] = useState(false);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+  const { drawer } = useDrawer();
+  const isOpenDrawer = drawer === DRAWER.Search || drawer === DRAWER.Notification;
 
   useEffect(() => {
     // Close the dropdown when the user clicks outside
@@ -43,23 +44,26 @@ export const MoreOption = () => {
   }, [ref]);
 
   return (
-    <DropdownMenu open={open} >
+    <DropdownMenu open={open}>
       <DropdownMenuTrigger
         asChild
         className="!justify-start"
       >
         <Button
           onClick={() => setOpen(!open)}
-          variant={'ghost'}
-          size={'lg'}
-          className="md:w-fit xl:w-full space-x-2 !px-3"
+          variant="ghost"
+          className={cn("sidebar-link",{'w-12': isOpenDrawer})}
+          size="lg"
         >
           <Menu />
-          <div className="hidden xl:block">More</div>
+          <div className={cn('hidden xl:pl-4 xl:block', { '!hidden xl:pl-0': isOpenDrawer })}>
+            More
+          </div>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
+        side="right"
         ref={ref}
         className={cn(
           'dark:bg-neutral-800 w-64 !rounded-xl !p-0 transition-opacity',
@@ -70,21 +74,21 @@ export const MoreOption = () => {
       >
         {!showModeToggle && (
           <>
-            <DropdownMenuItem className="optionItem">
+            <DropdownMenuItem className="option-item">
               <Settings size={20} />
               <p>Settings</p>
             </DropdownMenuItem>
-            <DropdownMenuItem className="optionItem">
+            <DropdownMenuItem className="option-item">
               <Activity size={20} />
               <p>Your activity</p>
             </DropdownMenuItem>
-            <DropdownMenuItem className="optionItem">
+            <DropdownMenuItem className="option-item">
               <Bookmark size={20} />
               <p>Saved</p>
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              className="optionItem"
+              className="option-item"
               onClick={() => setShowModeToggle(true)}
             >
               <Moon size={20} />
@@ -92,7 +96,7 @@ export const MoreOption = () => {
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              className="optionItem"
+              className="option-item"
               onClick={() => signOut()}
             >
               <LogOut size={20} />
