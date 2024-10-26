@@ -3,21 +3,20 @@ import { Button } from '@/components/ui/button';
 import TooltipData from './TooltipData';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useDrawer, DRAWER } from './SideBarProvider';
+import { useDrawer } from './SideBarProvider';
+import { usePathname } from 'next/navigation';
 
 const SidebarButtonSearch = () => {
-  console.log('render search');
-
+  // console.log('render search');
+  const pathname = usePathname();
   const { drawer, handleDrawer } = useDrawer();
   const handleClick = () => {
-    console.log('click Search button');
+    // console.log('click Search button');
     if (drawer === 2) return handleDrawer(4);
-    else {
-      return handleDrawer(2);
-    }
+    if (drawer === 1 || drawer === 3 || drawer === 4) return handleDrawer(2);
   };
   const isOpenSearch = drawer === 2;
-  const isOpenDrawer = drawer === 2 || drawer === 3;
+  const isOpenDrawer = drawer === 2 || drawer === 3 || drawer === 5;
 
   return (
     <TooltipData

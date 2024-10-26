@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const PostSchema = z.object({
   id: z.string(),
@@ -41,3 +41,21 @@ export const UserSchema = z.object({
 export const UpdateUser = UserSchema;
 export const DeleteUser = UserSchema.pick({ id: true });
 export const FollowUser = UserSchema.pick({ id: true });
+
+export const ConversationSchema = z.object({
+  id: z.string(),
+});
+
+export const CreateConversation = ConversationSchema.omit({ id: true });
+export const UpdateConversation = ConversationSchema;
+export const DeleteConversation = ConversationSchema.pick({ id: true });
+
+export const MessageSchema = z.object({
+  id: z.string(),
+  message: z.string(),
+  conversationId: z.string(),
+});
+
+export const CreateMessage = MessageSchema.omit({ id: true });
+export const UpdateMessage = MessageSchema;
+export const DeleteMessage = MessageSchema.pick({ id: true });

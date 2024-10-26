@@ -9,6 +9,7 @@ import SidebarButtonSearch from './SidebarButtonSearch';
 import { ProfileLink } from './ProfileLink';
 
 const NavContent = () => {
+  console.log('render navcontent')
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;

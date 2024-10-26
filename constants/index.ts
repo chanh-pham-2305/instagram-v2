@@ -40,7 +40,7 @@ export const sidebarLinks = [
   },
   {
     name: 'Messages',
-    href: '/messages',
+    href: '/direct/t/',
     icon: MessageCircle,
     type: 'Link',
   },
@@ -60,32 +60,32 @@ export const sidebarLinks = [
 
 export const profileTabs = [
   {
-    title: "Posts",
-    href: "",
+    title: 'Posts',
+    href: '',
     Icon: Grid3X3,
   },
   {
-    title: "Reels",
-    href: "reels",
+    title: 'Reels',
+    href: 'reels',
     Icon: Clapperboard,
   },
   {
-    title: "Saved",
-    href: "saved",
+    title: 'Saved',
+    href: 'saved',
     Icon: Bookmark,
   },
   {
-    title: "Tagged",
-    href: "tagged",
+    title: 'Tagged',
+    href: 'tagged',
     Icon: Contact,
   },
 ];
 
 export const settingTabs = [
-  { title: "Edit profile", value: "edit-profile" },
-  { title: "Professional account", value: "professional-account" },
-  { title: "Notifications", value: "notifications" },
-  { title: "Privacy and security", value: "privacy-and-security" },
-  { title: "Login activity", value: "login-activity" },
-  { title: "Emails from Instagram", value: "emails-from-instagram" },
+  { title: 'Edit profile', value: 'edit-profile' },
+  { title: 'Professional account', value: 'professional-account' },
+  { title: 'Notifications', value: 'notifications' },
+  { title: 'Privacy and security', value: 'privacy-and-security' },
+  { title: 'Login activity', value: 'login-activity' },
+  { title: 'Emails from Instagram', value: 'emails-from-instagram' },
 ];

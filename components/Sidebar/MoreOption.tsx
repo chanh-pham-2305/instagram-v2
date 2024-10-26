@@ -24,7 +24,7 @@ export const MoreOption = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
   const { drawer } = useDrawer();
-  const isOpenDrawer = drawer === DRAWER.Search || drawer === DRAWER.Notification;
+  const isOpenDrawer = drawer === 2 || drawer === 3 || drawer === 5;
 
   useEffect(() => {
     // Close the dropdown when the user clicks outside

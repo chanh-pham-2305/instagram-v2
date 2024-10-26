@@ -6,6 +6,7 @@ export enum DRAWER {
   'Search',
   'Notification',
   'None',
+  'Messenger'
 }
 
 type DrawerContextType = {
@@ -19,7 +20,7 @@ export default function DrawerContextProvider({ children }: { children: React.Re
   const [drawer, setDrawer] = useState<DRAWER>(DRAWER.Home);
 
   const handleDrawer = useCallback((d: DRAWER) => {
-    console.log(`rerender drawer: ${d} `);
+    // console.log(`rerender drawer: ${d} `);
     setDrawer(d);
   }, []);
   return (

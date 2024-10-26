@@ -3,12 +3,15 @@ import DrawerContextProvider from '@/components/Sidebar/SideBarProvider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative flex h-screen w-full flex-col md:flex-row overflow-y-scroll">
-      <DrawerContextProvider>
+    <div className="relative flex flex-col h-screen w-full md:flex-row overflow-y-scroll">
+      {/* <DrawerContextProvider>
         <SideBar />
-      </DrawerContextProvider>
+      </DrawerContextProvider> */}
+      <div className="h-full w-[72px] bg-white border border-r-1 flex justify-center items-center">
+        sidebar
+      </div>
 
-      <div className="flex-1 w-full px-2 mt-[70px] md:p-12 max-w-7xl mx-auto">{children}</div>
+      <div className="flex-auto mt-[70px] md:mt-0">{children}</div>
     </div>
   );
 }

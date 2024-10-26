@@ -1,19 +1,22 @@
-import { unstable_noStore as noStore } from "next/cache";
-import prisma from "./prisma";
+'use server'
+import { unstable_noStore as noStore } from 'next/cache';
+import prisma from './prisma';
 
-export async function fetchPosts() {
+export async function fetchPosts(skipPost: number, quantityPost: number) {
   // equivalent to doing fetch, cache: no-store
   noStore();
 
   try {
     const data = await prisma.post.findMany({
+      skip: skipPost,
+      take: quantityPost,
       include: {
         comments: {
           include: {
             user: true,
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         likes: {
@@ -25,14 +28,14 @@ export async function fetchPosts() {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
 
     return data;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch posts");
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch posts');
   }
 }
 
@@ -50,7 +53,7 @@ export async function fetchPostById(id: string) {
             user: true,
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         likes: {
@@ -65,8 +68,8 @@ export async function fetchPostById(id: string) {
 
     return data;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch post");
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch post');
   }
 }
 
@@ -89,7 +92,7 @@ export async function fetchPostsByUsername(username: string, postId?: string) {
             user: true,
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         likes: {
@@ -101,14 +104,14 @@ export async function fetchPostsByUsername(username: string, postId?: string) {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
 
     return data;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch posts");
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch posts');
   }
 }
 
@@ -123,12 +126,12 @@ export async function fetchProfile(username: string) {
       include: {
         posts: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         saved: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         followedBy: {
@@ -156,8 +159,8 @@ export async function fetchProfile(username: string) {
 
     return data;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch profile");
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch profile');
   }
 }
 
@@ -179,7 +182,7 @@ export async function fetchSavedPostsByUsername(username: string) {
                 user: true,
               },
               orderBy: {
-                createdAt: "desc",
+                createdAt: 'desc',
               },
             },
             likes: {
@@ -193,13 +196,13 @@ export async function fetchSavedPostsByUsername(username: string) {
         },
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
 
     return data;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch saved posts");
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch saved posts');
   }
 }

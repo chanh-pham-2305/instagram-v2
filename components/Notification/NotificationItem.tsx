@@ -6,7 +6,7 @@ import { buttonVariants } from '@/components/ui/button';
 
 export const NotificationItem = () => {
   return (
-    <div className="w-full h-[60px] bg-inherit hover:bg-[#121212] flex flex-row justify-between items-center px-4 py-2 gap-x-4">
+    <div className="w-full h-[72px] bg-inherit hover:bg-[#121212] flex flex-row justify-start items-center px-4 py-2 gap-x-4">
       <Image
         src={noavatar}
         width={44}

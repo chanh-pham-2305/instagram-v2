@@ -6,16 +6,19 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import {
-  BookmarkSchema,
   CreateComment,
-  CreatePost,
   DeleteComment,
+  CreatePost,
   DeletePost,
-  FollowUser,
-  LikeSchema,
   UpdatePost,
+  LikeSchema,
+  BookmarkSchema,
+  FollowUser,
   UpdateUser,
+  CreateMessage,
+  DeleteMessage,
 } from './schemas';
+import { User } from '@prisma/client';
 
 export async function createPost(values: z.infer<typeof CreatePost>) {
   const userId = await getUserId();
@@ -57,7 +60,7 @@ export async function deletePost(formData: FormData) {
   const userId = await getUserId();
 
   const { id } = DeletePost.parse({
-    id: formData.get("id"),
+    id: formData.get('id'),
   });
 
   const post = await prisma.post.findUnique({
@@ -68,7 +71,7 @@ export async function deletePost(formData: FormData) {
   });
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found');
   }
 
   try {
@@ -77,10 +80,10 @@ export async function deletePost(formData: FormData) {
         id,
       },
     });
-    revalidatePath("/");
-    return { message: "Deleted Post." };
+    revalidatePath('/');
+    return { message: 'Deleted Post.' };
   } catch (error) {
-    return { message: "Database Error: Failed to Delete Post." };
+    return { message: 'Database Error: Failed to Delete Post.' };
   }
 }
 
@@ -92,7 +95,7 @@ export async function updatePost(values: z.infer<typeof UpdatePost>) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Post.",
+      message: 'Missing Fields. Failed to Update Post.',
     };
   }
 
@@ -106,7 +109,7 @@ export async function updatePost(values: z.infer<typeof UpdatePost>) {
   });
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found');
   }
 
   try {
@@ -120,11 +123,11 @@ export async function updatePost(values: z.infer<typeof UpdatePost>) {
       },
     });
   } catch (error) {
-    return { message: "Database Error: Failed to Update Post." };
+    return { message: 'Database Error: Failed to Update Post.' };
   }
 
-  revalidatePath("/");
-  redirect("/");
+  revalidatePath('/');
+  redirect('/');
 }
 
 export async function likePost(value: FormDataEntryValue | null) {
@@ -135,7 +138,7 @@ export async function likePost(value: FormDataEntryValue | null) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Like Post.",
+      message: 'Missing Fields. Failed to Like Post.',
     };
   }
 
@@ -148,7 +151,7 @@ export async function likePost(value: FormDataEntryValue | null) {
   });
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found');
   }
 
   const like = await prisma.like.findUnique({
@@ -170,10 +173,10 @@ export async function likePost(value: FormDataEntryValue | null) {
           },
         },
       });
-      revalidatePath("/");
-      return { message: "Unliked Post." };
+      revalidatePath('/');
+      return { message: 'Unliked Post.' };
     } catch (error) {
-      return { message: "Database Error: Failed to Unlike Post." };
+      return { message: 'Database Error: Failed to Unlike Post.' };
     }
   }
 
@@ -184,10 +187,10 @@ export async function likePost(value: FormDataEntryValue | null) {
         userId,
       },
     });
-    revalidatePath("/");
-    return { message: "Liked Post." };
+    revalidatePath('/');
+    return { message: 'Liked Post.' };
   } catch (error) {
-    return { message: "Database Error: Failed to Like Post." };
+    return { message: 'Database Error: Failed to Like Post.' };
   }
 }
 
@@ -199,7 +202,7 @@ export async function bookmarkPost(value: FormDataEntryValue | null) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Bookmark Post.",
+      message: 'Missing Fields. Failed to Bookmark Post.',
     };
   }
 
@@ -212,7 +215,7 @@ export async function bookmarkPost(value: FormDataEntryValue | null) {
   });
 
   if (!post) {
-    throw new Error("Post not found.");
+    throw new Error('Post not found.');
   }
 
   const bookmark = await prisma.savedPost.findUnique({
@@ -234,11 +237,11 @@ export async function bookmarkPost(value: FormDataEntryValue | null) {
           },
         },
       });
-      revalidatePath("/");
-      return { message: "Unbookmarked Post." };
+      revalidatePath('/');
+      return { message: 'Unbookmarked Post.' };
     } catch (error) {
       return {
-        message: "Database Error: Failed to Unbookmark Post.",
+        message: 'Database Error: Failed to Unbookmark Post.',
       };
     }
   }
@@ -250,11 +253,11 @@ export async function bookmarkPost(value: FormDataEntryValue | null) {
         userId,
       },
     });
-    revalidatePath("/");
-    return { message: "Bookmarked Post." };
+    revalidatePath('/');
+    return { message: 'Bookmarked Post.' };
   } catch (error) {
     return {
-      message: "Database Error: Failed to Bookmark Post.",
+      message: 'Database Error: Failed to Bookmark Post.',
     };
   }
 }
@@ -267,7 +270,7 @@ export async function createComment(values: z.infer<typeof CreateComment>) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Create Comment.",
+      message: 'Missing Fields. Failed to Create Comment.',
     };
   }
 
@@ -280,7 +283,7 @@ export async function createComment(values: z.infer<typeof CreateComment>) {
   });
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found');
   }
 
   try {
@@ -291,10 +294,10 @@ export async function createComment(values: z.infer<typeof CreateComment>) {
         userId,
       },
     });
-    revalidatePath("/");
-    return { message: "Created Comment." };
+    revalidatePath('/');
+    return { message: 'Created Comment.' };
   } catch (error) {
-    return { message: "Database Error: Failed to Create Comment." };
+    return { message: 'Database Error: Failed to Create Comment.' };
   }
 }
 
@@ -302,7 +305,7 @@ export async function deleteComment(formData: FormData) {
   const userId = await getUserId();
 
   const { id } = DeleteComment.parse({
-    id: formData.get("id"),
+    id: formData.get('id'),
   });
 
   const comment = await prisma.comment.findUnique({
@@ -313,7 +316,7 @@ export async function deleteComment(formData: FormData) {
   });
 
   if (!comment) {
-    throw new Error("Comment not found");
+    throw new Error('Comment not found');
   }
 
   try {
@@ -322,10 +325,10 @@ export async function deleteComment(formData: FormData) {
         id,
       },
     });
-    revalidatePath("/");
-    return { message: "Deleted Comment." };
+    revalidatePath('/');
+    return { message: 'Deleted Comment.' };
   } catch (error) {
-    return { message: "Database Error: Failed to Delete Comment." };
+    return { message: 'Database Error: Failed to Delete Comment.' };
   }
 }
 
@@ -337,7 +340,7 @@ export async function updateProfile(values: z.infer<typeof UpdateUser>) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Profile.",
+      message: 'Missing Fields. Failed to Update Profile.',
     };
   }
 
@@ -357,10 +360,10 @@ export async function updateProfile(values: z.infer<typeof UpdateUser>) {
         websiteURL,
       },
     });
-    revalidatePath("/");
-    return { message: "Updated Profile." };
+    revalidatePath('/');
+    return { message: 'Updated Profile.' };
   } catch (error) {
-    return { message: "Database Error: Failed to Update Profile." };
+    return { message: 'Database Error: Failed to Update Profile.' };
   }
 }
 
@@ -368,7 +371,7 @@ export async function followUser(formData: FormData) {
   const userId = await getUserId();
 
   const { id } = FollowUser.parse({
-    id: formData.get("id"),
+    id: formData.get('id'),
   });
 
   const user = await prisma.user.findUnique({
@@ -378,10 +381,9 @@ export async function followUser(formData: FormData) {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 
-  
   const follows = await prisma.follows.findUnique({
     where: {
       followerId_followingId: {
@@ -402,11 +404,11 @@ export async function followUser(formData: FormData) {
           },
         },
       });
-      revalidatePath("/");
-      return { message: "Unfollowed User." };
+      revalidatePath('/');
+      return { message: 'Unfollowed User.' };
     } catch (error) {
       return {
-        message: "Database Error: Failed to Unfollow User.",
+        message: 'Database Error: Failed to Unfollow User.',
       };
     }
   }
@@ -419,11 +421,31 @@ export async function followUser(formData: FormData) {
         followingId: id,
       },
     });
-    revalidatePath("/");
-    return { message: "Followed User." };
+    revalidatePath('/');
+    return { message: 'Followed User.' };
   } catch (error) {
     return {
-      message: "Database Error: Failed to Follow User.",
+      message: 'Database Error: Failed to Follow User.',
     };
   }
+}
+
+export async function createConversation(user1: User, user2: User){
+  console.log(`user 1: ${user1}; user 2: ${user2}`)
+  revalidatePath('/direct/t');
+}
+
+export async function createMessage(values: z.infer<typeof CreateMessage>) {
+  const userId = await getUserId();
+
+  const validatedFields = CreateMessage.safeParse(values);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Message.',
+    };
+  }
+
+
 }

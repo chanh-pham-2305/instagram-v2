@@ -13,7 +13,7 @@ export const ProfileLink = ({ user }: { user: User }) => {
   const href = `/${user.username}`;
   const isActive = pathname === href;
   const { drawer } = useDrawer();
-  const isOpenDrawer = drawer === DRAWER.Search || drawer === DRAWER.Notification;
+  const isOpenDrawer = drawer === 2 || drawer === 3 || drawer === 5;
 
   return (
     <Link

@@ -10,7 +10,7 @@ const Home = () => {
         <Suspense fallback={<PostsSkeleton />}>
           <Posts />
         </Suspense>
-        {/* <h1>HOME PAGE</h1> */}
+        {/* <h1>HOME PAGE POST</h1> */}
       </div>
     </main>
   );

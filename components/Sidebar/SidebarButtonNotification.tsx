@@ -6,19 +6,17 @@ import { cn } from '@/lib/utils';
 import { useDrawer, DRAWER } from './SideBarProvider';
 
 const SidebarButtonNotification = () => {
-  console.log('render noti');
+  // console.log('render noti');
   const { drawer, handleDrawer } = useDrawer();
   const handleClick = () => {
-    console.log('click Notification');
+    // console.log('click Notification');
 
     if (drawer === 3) return handleDrawer(4);
-    else {
-      return handleDrawer(3);
-    }
+    if (drawer === 1 || drawer === 2 || drawer === 4) return handleDrawer(3);
   };
 
   const isOpenNotification = drawer === 3;
-  const isOpenDrawer = drawer === 3 || drawer === 2;
+  const isOpenDrawer = drawer === 2 || drawer === 3 || drawer === 5;
 
   return (
     <TooltipData

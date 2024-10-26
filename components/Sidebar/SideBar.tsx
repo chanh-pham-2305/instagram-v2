@@ -16,6 +16,7 @@ const SideBar = () => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(true);
 
   const isOpenDrawer = drawer === 2 || drawer === 3;
+  const isMessage = drawer === 5;
 
   // console.log(isComponentVisible)
   useEffect(() => {
@@ -32,9 +33,9 @@ const SideBar = () => {
   return (
     <section
       ref={ref}
-      className={cn('sidebar', { 'md:w-[468px] xl:w-[468px]': isOpenDrawer })}
+      className={cn('sidebar', { 'md:w-[468px]': isOpenDrawer }, { 'md:w-[72px]': isMessage })}
     >
-      <nav className={cn('sidebar-content', { 'w-[72px]': isOpenDrawer })}>
+      <nav className={cn('sidebar-content', { 'w-[72px]': isOpenDrawer || isMessage })}>
         <LogoButton />
         <NavContent />
         <MoreOption />

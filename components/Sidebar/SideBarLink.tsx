@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { LucideIcon } from 'lucide-react';
 import TooltipData from './TooltipData';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useDrawer, DRAWER } from './SideBarProvider';
+import { useDrawer } from './SideBarProvider';
 
 type SideBarLinkProps = {
   name: string;
@@ -14,12 +14,17 @@ type SideBarLinkProps = {
 };
 
 const SideBarLink = ({ item, pathname }: { item: SideBarLinkProps; pathname: string }) => {
-  const { drawer } = useDrawer();
+  console.log(`render ${item.name} ${pathname}`);
+  const { drawer, handleDrawer } = useDrawer();
   const LinkIcon = item.icon;
   const typeLink = item.type;
   const isActive =
-    (typeLink === 'Link' && pathname === item.href) || pathname.startsWith(`${item.href}/`);
-  const isOpenDrawer = drawer === 2 || drawer === 3;
+    (typeLink === 'Link' && pathname === item.href) || pathname.startsWith(`${item.href}`);
+  const handleClick = () => {
+    if (item.name === 'Messages') handleDrawer(5);
+  };
+
+  const isOpenDrawer = drawer === 2 || drawer === 3 || drawer === 5;
   return (
     <TooltipData
       data={item.name}
@@ -28,11 +33,15 @@ const SideBarLink = ({ item, pathname }: { item: SideBarLinkProps; pathname: str
       <Link
         href={item.href}
         key={item.name}
-        className={cn(buttonVariants({
-          variant: 'ghost',
-          className: 'sidebar-link group',
-          size: 'lg',
-        }),{'!w-12': isOpenDrawer})}
+        onClick={handleClick}
+        className={cn(
+          buttonVariants({
+            variant: 'ghost',
+            className: 'sidebar-link group',
+            size: 'lg',
+          }),
+          { '!w-12': isOpenDrawer },
+        )}
       >
         <LinkIcon
           className={cn('w-6 group-hover:scale-120', {
